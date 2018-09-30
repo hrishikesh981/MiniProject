@@ -8,8 +8,10 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,16 +27,28 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
 
 public class EditPharmacyDetails extends Fragment {
     public static final int GET_FROM_GALLERY = 3, PLACE_PICKER_REQUEST = 1;
-    String addressCoords=null;
+    private String addressCoords=null;
+    private Uri downloadUrl, selectedImage;
+    private StorageReference storageReference;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,6 +63,8 @@ public class EditPharmacyDetails extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Edit Details");
+
+        storageReference= FirebaseStorage.getInstance().getReference();
         ImageButton button=view.findViewById(R.id.change_logo_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +78,9 @@ public class EditPharmacyDetails extends Fragment {
             public void onClick(View v) {
                 if(validateFields()){
                     fireStoreUpdate();
+                }
+                else {
+
                 }
 
             }
@@ -83,14 +102,56 @@ public class EditPharmacyDetails extends Fragment {
     }
 
     private void fireStoreUpdate() {
+    //first firebase storage image uploaded.
+        Uri file=selectedImage;
+        StorageReference display_pictures=storageReference.child("dp/"+FirebaseAuth.getInstance().getCurrentUser().getEmail()+".jpg");
+        display_pictures.putFile(file)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        downloadUrl=taskSnapshot.getUploadSessionUri();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        String tmsg1=e.getStackTrace().toString();
+                        Toast.makeText(getActivity(), tmsg1, Toast.LENGTH_LONG).show();
+                    }
+                });
+//        EditText pharmaName=getView().findViewById(R.id.pharmacy_name_edit);
+//        EditText pharmaPhone1=getView().findViewById(R.id.pharmacy_phone1_edit);
+//        EditText pharmaPhone2=getView().findViewById(R.id.pharmacy_phone2_edit);
+//        FirebaseFirestore db=FirebaseFirestore.getInstance();
+//        Map<String,Object> user=new HashMap<>();
+//        user.put("display_picture",downloadUrl);
+//        user.put("pharma_name",pharmaName);
+//        user.put("phone", Arrays.asList(pharmaPhone1,pharmaPhone2));
+//        user.put("address",addressCoords);
+//
+//        db.collection("pharmacies").document(FirebaseAuth.getInstance().getCurrentUser().getEmail())
+//        .set(user)
+//        .addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Log.w("-","nao");
+//            }
+//        })
+//        .addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void aVoid) {
+//                Toast.makeText(getActivity(), "thankgod", Toast.LENGTH_LONG).show();
+//            }
+//        });
 
-    }
+
+   }
 
     private boolean validateFields() {
         EditText pharmaName=getView().findViewById(R.id.pharmacy_name_edit);
-        EditText pharmaPhone1=getView().findViewById(R.id.pharmacy_name_edit);
-        EditText pharmaPhone2=getView().findViewById(R.id.pharmacy_name_edit);
-        EditText pharmaAddress=getView().findViewById(R.id.pharmacy_name_edit);
+        EditText pharmaPhone1=getView().findViewById(R.id.pharmacy_phone1_edit);
+        EditText pharmaPhone2=getView().findViewById(R.id.pharmacy_phone2_edit);
+        EditText pharmaAddress=getView().findViewById(R.id.pharmacy_address_edit);
         if(pharmaName.getText().equals("")){
             Toast.makeText(getActivity(), "The name field is empty", Toast.LENGTH_LONG).show();
             return  false;
@@ -111,7 +172,7 @@ public class EditPharmacyDetails extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode==GET_FROM_GALLERY&&resultCode== RESULT_OK){
-            Uri selectedImage = data.getData();
+            selectedImage = data.getData();
             Bitmap bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),selectedImage);
