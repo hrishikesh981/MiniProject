@@ -94,7 +94,9 @@ public class HomePageActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_edit_pharma_details) {
-            fragment=new EditPharmacyDetails();
+            Intent intent=new Intent(this,EditPharmaDetails.class);
+            startActivity(intent);
+
 
         } else if (id==R.id.nav_add_data){
             fragment=new Menu1();
