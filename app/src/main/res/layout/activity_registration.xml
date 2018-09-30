@@ -8,6 +8,7 @@
 
     <EditText
         android:id="@+id/editTextEmailR"
+        style="@android:style/Widget.Material.Light.AutoCompleteTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="Email"
@@ -17,8 +18,10 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/editTextPasswordR"
+        style="@android:style/Widget.Material.Light.AutoCompleteTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="Password"
@@ -28,8 +31,10 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextEmailR" />
+
     <EditText
         android:id="@+id/editTextPasswordR2"
+        style="@android:style/Widget.Material.Light.AutoCompleteTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="Reenter Password"
@@ -44,46 +49,37 @@
         android:id="@+id/textView3R"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Email"
-        app:layout_constraintTop_toTopOf="@+id/editTextEmailR"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextEmailR"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/editTextEmailR"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextEmailR"
-        android:textSize="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+        app:layout_constraintTop_toTopOf="@+id/editTextEmailR" />
 
     <TextView
         android:id="@+id/textView4R"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Password"
-        app:layout_constraintTop_toTopOf="@+id/editTextPasswordR"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextPasswordR"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/editTextPasswordR"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextPasswordR"
-        android:textSize="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+        app:layout_constraintTop_toTopOf="@+id/editTextPasswordR" />
 
     <TextView
         android:id="@+id/textView5R"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:text="Reenter"
-        app:layout_constraintTop_toTopOf="@+id/editTextPasswordR2"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextPasswordR2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/editTextPasswordR2"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextPasswordR2"
-        android:textSize="16dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+        app:layout_constraintTop_toTopOf="@+id/editTextPasswordR2" />
 
     <Button
         android:id="@+id/button3"

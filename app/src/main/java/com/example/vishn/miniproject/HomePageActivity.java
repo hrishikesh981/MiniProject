@@ -93,9 +93,11 @@ public class HomePageActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_add_data) {
-            fragment=new Menu1();
+        if (id == R.id.nav_edit_pharma_details) {
+            fragment=new EditPharmacyDetails();
 
+        } else if (id==R.id.nav_add_data){
+            fragment=new Menu1();
         } else if (id == R.id.nav_edit_data) {
             fragment=new Menu2();
 

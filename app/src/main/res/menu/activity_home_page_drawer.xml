@@ -14,6 +14,9 @@
             android:title="Edit Data" />
 
     </group>
+    <item
+        android:id="@+id/nav_edit_pharma_details"
+        android:title="Edit Pharmacy Details"/>
 <group android:checkableBehavior="single">
     <item
         android:id="@+id/nav_sign_out"
