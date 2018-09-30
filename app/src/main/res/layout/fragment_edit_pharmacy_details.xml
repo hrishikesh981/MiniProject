@@ -142,6 +142,16 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pharmacy_location_map_edit" />
 
+        <Button
+            android:id="@+id/button_confirm_changes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirm Changes"
+            app:layout_constraintTop_toBottomOf="@id/pharmacy_address_edit"
+            app:layout_constraintRight_toRightOf="parent"
+            android:textColor="@color/white"
+            android:background="@color/LinkColor"/>
+
 
     </android.support.constraint.ConstraintLayout>
 

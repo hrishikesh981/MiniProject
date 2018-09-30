@@ -34,6 +34,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class EditPharmacyDetails extends Fragment {
     public static final int GET_FROM_GALLERY = 3, PLACE_PICKER_REQUEST = 1;
+    String addressCoords=null;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,6 +56,16 @@ public class EditPharmacyDetails extends Fragment {
                 startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
             }
         });
+        Button confirmChanges=view.findViewById(R.id.button_confirm_changes);
+        confirmChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(validateFields()){
+                    fireStoreUpdate();
+                }
+
+            }
+        });
         Button mapViewbtn=view.findViewById(R.id.pharmacy_location_map_edit);
         mapViewbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +82,30 @@ public class EditPharmacyDetails extends Fragment {
                 }
             }
         });
+    }
+
+    private void fireStoreUpdate() {
+
+    }
+
+    private boolean validateFields() {
+        EditText pharmaName=getView().findViewById(R.id.pharmacy_name_edit);
+        EditText pharmaPhone1=getView().findViewById(R.id.pharmacy_name_edit);
+        EditText pharmaPhone2=getView().findViewById(R.id.pharmacy_name_edit);
+        EditText pharmaAddress=getView().findViewById(R.id.pharmacy_name_edit);
+        if(pharmaName.getText().equals("")){
+            Toast.makeText(getActivity(), "The name field is empty", Toast.LENGTH_LONG).show();
+            return  false;
+        }
+        if(pharmaPhone1.getText().equals("")&&pharmaPhone2.getText().equals("")){
+            Toast.makeText(getActivity(), "The phone field is empty", Toast.LENGTH_LONG).show();
+            return  false;
+        }
+        if(pharmaAddress.getText().equals("")){
+            Toast.makeText(getActivity(), "The Address field is empty", Toast.LENGTH_LONG).show();
+            return  false;
+        }
+        return true;
     }
 
     @Override
@@ -100,6 +135,7 @@ public class EditPharmacyDetails extends Fragment {
                 EditText editText=getView().findViewById(R.id.pharmacy_address_edit);
                 editText.setText(place.getAddress());
                 Toast.makeText(getActivity(), toastMsg, Toast.LENGTH_LONG).show();
+                addressCoords=toastMsg;
             }
         }
     }
