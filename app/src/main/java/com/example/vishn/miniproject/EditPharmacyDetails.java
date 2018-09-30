@@ -75,9 +75,7 @@ public class EditPharmacyDetails extends Fragment {
 
                 try {
                     startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
-                } catch (GooglePlayServicesRepairableException e) {
-                    e.printStackTrace();
-                } catch (GooglePlayServicesNotAvailableException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
