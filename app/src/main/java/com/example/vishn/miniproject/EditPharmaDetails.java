@@ -22,6 +22,8 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -50,6 +52,8 @@ public class EditPharmaDetails extends Activity {
         Button button=findViewById(R.id.button_confirm_changes);
 
 
+
+
     }
 
     public void addDataFun(View view) {
@@ -75,32 +79,53 @@ public class EditPharmaDetails extends Activity {
                         // ...
                     }
                 });
-        
+
+//        FirebaseFirestore db=FirebaseFirestore.getInstance();
+//        CollectionReference pharmRef=FirebaseFirestore.getInstance().collection("pharmacies");
+//        pharmRef.add(new PharmNote(pharma_name.getText(),pharma_phone1.getText(),pharma_addr.getText(),pharma_phone2));
+//        Map<String,String> pharmacy=new HashMap<>();
+//        pharmacy.put("pharma_name",pharma_name.getText().toString());
+//        pharmacy.put("pharma_phone1",pharma_phone1.getText().toString());
+//       // pharmacy.put("pharma_phone2",pharma_phone2.getText().toString());
+//        pharmacy.put("pharma_addr",pharma_addr_coords);
+//       // pharmacy.put("pharma_dp_url",dp_url);
+
+        String pname,paddress,contact;
+        int prio;
+        pname=pharma_name.getText().toString();
+        paddress=pharma_addr.getText().toString();
+        contact=pharma_phone1.getText().toString();
+        prio=Integer.parseInt(pharma_phone2.getText().toString());
         FirebaseFirestore db=FirebaseFirestore.getInstance();
+        CollectionReference pharmRef=FirebaseFirestore.getInstance().collection("pharmacies");
+        pharmRef.add(new PharmNote(pname,contact,paddress,prio)).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Toast.makeText(EditPharmaDetails.this,"ADD HUA",Toast.LENGTH_LONG).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(EditPharmaDetails.this,"ADD NAHI HUA",Toast.LENGTH_LONG).show();
+            }
+        });
 
-        Map<String,String> pharmacy=new HashMap<>();
-        pharmacy.put("pharma_name",pharma_name.getText().toString());
-        pharmacy.put("pharma_phone1",pharma_phone1.getText().toString());
-        pharmacy.put("pharma_phone2",pharma_phone2.getText().toString());
-        pharmacy.put("pharma_addr",pharma_addr_coords);
-        pharmacy.put("pharma_dp_url",dp_url);
-        
 
 
-        db.collection("pharmacies").document(FirebaseAuth.getInstance().getCurrentUser().getEmail())
-                .set(pharmacy)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(EditPharmaDetails.this,"success",Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(EditPharmaDetails.this,"fail",Toast.LENGTH_SHORT).show();
-                    }
-                });
+//        db.collection("pharmacies").document(FirebaseAuth.getInstance().getCurrentUser().getEmail())
+//                .set(pharmacy)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        Toast.makeText(EditPharmaDetails.this,"success",Toast.LENGTH_SHORT).show();
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(EditPharmaDetails.this,"fail",Toast.LENGTH_SHORT).show();
+//                    }
+//                });
     }
 
     public void getLocationFun(View view) {
@@ -122,7 +147,7 @@ public class EditPharmaDetails extends Activity {
                 String toastMsg = String.format("Place: %s", place.getName());
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
                 pharma_addr.setText(place.getAddress());
-                pharma_addr_coords=place.getLatLng().toString();
+                pharma_addr_coords=place.getName().toString();
             }
         }
         if(requestCode==GET_FROM_GALLERY&&resultCode==RESULT_OK){
