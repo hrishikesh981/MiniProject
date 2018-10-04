@@ -4,18 +4,29 @@ public class PharmNote {
     private String pharm_name;
     private String pharm_contact;
     private String pharm_address;
+
+    public String getPharm_dp() {
+        return pharm_dp;
+    }
+
+    public void setPharm_dp(String pharm_dp) {
+        this.pharm_dp = pharm_dp;
+    }
+
+    private String pharm_dp;
     private int priority;
 
     public PharmNote()
     {
 
     }
-    public PharmNote(String pharm_name, String pharm_contact, String pharm_address, int priority)
+    public PharmNote(String pharm_name, String pharm_contact, String pharm_address, int priority, String pharm_dp)
     {
         this.pharm_name=pharm_name;
         this.pharm_contact=pharm_contact;
         this.pharm_address=pharm_address;
         this.priority=priority;
+        this.pharm_dp=pharm_dp;
     }
 
     public String getPharm_name() {

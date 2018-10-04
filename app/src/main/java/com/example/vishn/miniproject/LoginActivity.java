@@ -31,9 +31,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         FirebaseUser currFirebaseUser=mFirebaseAuth.getCurrentUser();
-        TextView tset=findViewById(R.id.textView3);
+        //TextView tset=findViewById(R.id.textView3);
         if (currFirebaseUser != null) {
-            tset.setText(currFirebaseUser.getEmail());
+            //tset.setText(currFirebaseUser.getEmail());
+            Toast.makeText(this,"already loggged in",Toast.LENGTH_SHORT).show();
             gotoHome(currFirebaseUser);
         }
     }
@@ -47,24 +48,24 @@ public class LoginActivity extends AppCompatActivity {
     public void checkLogin(View view) {
         EditText euname= findViewById(R.id.editTextEmail);
         EditText epwd= findViewById(R.id.editTextPassword);
-        final TextView tset=findViewById(R.id.textView3);
+        //final TextView tset=findViewById(R.id.textView3);
         mFirebaseAuth.signInWithEmailAndPassword(euname.getText().toString(),epwd.getText().toString())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d("", "signInWithEmail:success");
+                            Log.d("signInWithEmail:", "success");
                             FirebaseUser user = mFirebaseAuth.getCurrentUser();
                             if (user != null) {
                                 gotoHome(user);
                             }
                         }else{
                             // If sign in fails, display a message to the user.
-                            Log.d("", "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Log.d("signInWithEmail:", task.getException().toString());
+                            Toast.makeText(LoginActivity.this, Objects.requireNonNull(task.getException()).toString(),
                                     Toast.LENGTH_SHORT).show();
-                            tset.setText(Objects.requireNonNull(task.getException()).toString());
+                            //tset.setText(Objects.requireNonNull(task.getException()).toString());
                         }
                     }
                 });

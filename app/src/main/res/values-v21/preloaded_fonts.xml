@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/alegreya_sans_sc_bold</item>
+        <item>@font/archivo_narrow</item>
+        <item>@font/archivo_narrow_bold</item>
+        <item>@font/asap_bold</item>
+        <item>@font/montserrat</item>
+    </array>
+</resources>

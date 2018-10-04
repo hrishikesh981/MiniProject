@@ -1,6 +1,7 @@
 package com.example.vishn.miniproject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -26,9 +28,11 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,6 +40,7 @@ import java.util.Map;
 public class EditPharmaDetails extends Activity {
     private static final int GET_FROM_GALLERY = 2 ,PLACE_PICKER_REQUEST=1;
     EditText pharma_name,pharma_phone1,pharma_phone2,pharma_addr;String pharma_addr_coords,dp_url;
+    ImageView display_picture;
     Uri selectImage;
     Bitmap bitmap;
     private StorageReference storageRef;
@@ -49,9 +54,7 @@ public class EditPharmaDetails extends Activity {
         pharma_phone2=findViewById(R.id.pharmacy_phone2_edit);
         pharma_addr=findViewById(R.id.pharmacy_address_edit);
 
-        Button button=findViewById(R.id.button_confirm_changes);
-
-
+        display_picture=findViewById(R.id.display_picture);
 
 
     }
@@ -61,24 +64,40 @@ public class EditPharmaDetails extends Activity {
         storageRef = FirebaseStorage.getInstance().getReference();
 
         Uri file = selectImage;
-        StorageReference riversRef = storageRef.child(""+FirebaseAuth.getInstance().getCurrentUser().getEmail()+"/dp.jpg");
+        if(file!=null){
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading");
+            progressDialog.show();
 
-        riversRef.putFile(file)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // Get a URL to the uploaded content
-                        dp_url=taskSnapshot.getUploadSessionUri().toString();
+            StorageReference dp_upload_ref = storageRef.child(""+FirebaseAuth.getInstance().getCurrentUser().getEmail()+"/dp.jpg");
+            dp_upload_ref.putFile(selectImage)
+            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "File Uploaded ", Toast.LENGTH_LONG).show();
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                        // ...
-                    }
-                });
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            })
+            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                    progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
+                }
+            });
+
+        }
+        else {
+            Toast.makeText(this,"Please select an image",Toast.LENGTH_LONG).show();
+        }
 
 //        FirebaseFirestore db=FirebaseFirestore.getInstance();
 //        CollectionReference pharmRef=FirebaseFirestore.getInstance().collection("pharmacies");
@@ -90,15 +109,16 @@ public class EditPharmaDetails extends Activity {
 //        pharmacy.put("pharma_addr",pharma_addr_coords);
 //       // pharmacy.put("pharma_dp_url",dp_url);
 
-        String pname,paddress,contact;
+        String pname,paddress,contact,dp_url;
         int prio;
         pname=pharma_name.getText().toString();
         paddress=pharma_addr.getText().toString();
         contact=pharma_phone1.getText().toString();
+        dp_url=FirebaseAuth.getInstance().getCurrentUser().getEmail()+"/dp.jpg";
         prio=Integer.parseInt(pharma_phone2.getText().toString());
         FirebaseFirestore db=FirebaseFirestore.getInstance();
         CollectionReference pharmRef=FirebaseFirestore.getInstance().collection("pharmacies");
-        pharmRef.add(new PharmNote(pname,contact,paddress,prio)).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+        pharmRef.add(new PharmNote(pname,contact,paddress,prio,dp_url)).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 Toast.makeText(EditPharmaDetails.this,"ADD HUA",Toast.LENGTH_LONG).show();
@@ -126,6 +146,8 @@ public class EditPharmaDetails extends Activity {
 //                        Toast.makeText(EditPharmaDetails.this,"fail",Toast.LENGTH_SHORT).show();
 //                    }
 //                });
+        Intent intent=new Intent(this,HomePageActivity.class);
+        startActivity(intent);
     }
 
     public void getLocationFun(View view) {

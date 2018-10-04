@@ -27,16 +27,17 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     @Override
+
     protected void onStart() {
         super.onStart();
         FirebaseUser currFirebaseUser=mFirebaseAuth.getCurrentUser();
-        TextView tset=findViewById(R.id.textView4);
+        //TextView tset=findViewById(R.id.textView4);
         if (currFirebaseUser != null) {
-            tset.setText(currFirebaseUser.getEmail());
+            //tset.setText(currFirebaseUser.getEmail());
+            Toast.makeText(this,"already logged in",Toast.LENGTH_SHORT).show();
             gotoHome(currFirebaseUser);
         }
     }
-
     public void gotoLogin(View view)
     {
         Intent intent=new Intent(this,LoginActivity.class);
@@ -47,7 +48,7 @@ public class RegistrationActivity extends AppCompatActivity {
         EditText euname=findViewById(R.id.editTextEmailR);
         EditText epwd=findViewById(R.id.editTextPasswordR);
         EditText epwd2=findViewById(R.id.editTextPasswordR2);
-        final TextView tset=findViewById(R.id.textView4);
+        //final TextView tset=findViewById(R.id.textView4);
         if(epwd.getText().toString().equals(epwd2.getText().toString()))
         {
             mFirebaseAuth.createUserWithEmailAndPassword(euname.getText().toString(),epwd.getText().toString())
@@ -55,17 +56,17 @@ public class RegistrationActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                Log.d("", "createUserWihEmail:Successful");
+                                Log.d("createUserWihEmail:", "Successful");
                                 FirebaseUser user = mFirebaseAuth.getCurrentUser();
                                 if (user != null) {
                                     gotoHome(user);
                                 }
                             } else {
                                 // If sign in fails, display a message to the user.
-                                Log.w("", "createUserWithEmail:failure", task.getException());
-                                Toast.makeText(RegistrationActivity.this, "Authentication failed.",
+                                Log.w("createUserWithEmail:", task.getException().toString());
+                                Toast.makeText(RegistrationActivity.this, task.getException().toString(),
                                         Toast.LENGTH_SHORT).show();
-                                tset.setText(task.getException().toString());
+//                                tset.setText(task.getException().toString());
                             }
                         }
                     });
@@ -75,7 +76,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private void gotoHome( FirebaseUser currFirebaseUser) {
 
-        Intent intent=new Intent(this,HomePageActivity.class);
+        Intent intent=new Intent(this,EditPharmaDetails.class);
 //        TextView tset1=findViewById(R.id.navbar_email);
 //        tset1.setText(currFirebaseUser.getEmail());
         startActivity(intent);

@@ -1,120 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     tools:context=".RegistrationActivity">
+
+    <!--<EditText-->
+        <!--android:id="@+id/name_register"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_above="@+id/email_register"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginBottom="-71dp"-->
+        <!--android:ems="10"-->
+        <!--android:hint="Name"-->
+        <!--android:inputType="textPersonName"-->
+        <!--android:textColor="@color/colorTransparentWhite"-->
+        <!--android:textColorHint="@color/colorPrimary" />-->
 
     <EditText
         android:id="@+id/editTextEmailR"
-        style="@android:style/Widget.Material.Light.AutoCompleteTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="Email"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="77dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="@color/colorTransparentWhite"
+        android:textColorHint="@color/colorPrimary" />
 
     <EditText
         android:id="@+id/editTextPasswordR"
-        style="@android:style/Widget.Material.Light.AutoCompleteTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="Password"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmailR" />
+        android:textColor="@color/colorTransparentWhite"
+        android:textColorHint="@color/colorPrimary" />
 
     <EditText
         android:id="@+id/editTextPasswordR2"
-        style="@android:style/Widget.Material.Light.AutoCompleteTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="Reenter Password"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="187dp"
         android:ems="10"
-        android:hint="Reenter Password"
+        android:hint="Confirm Password"
         android:inputType="textPassword"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPasswordR" />
+        android:textColor="@color/colorTransparentWhite"
+        android:textColorHint="@color/colorPrimary" />
 
-    <TextView
-        android:id="@+id/textView3R"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Email"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextEmailR"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/editTextEmailR"
-        app:layout_constraintTop_toTopOf="@+id/editTextEmailR" />
-
-    <TextView
-        android:id="@+id/textView4R"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Password"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextPasswordR"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/editTextPasswordR"
-        app:layout_constraintTop_toTopOf="@+id/editTextPasswordR" />
-
-    <TextView
-        android:id="@+id/textView5R"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reenter"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextPasswordR2"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/editTextPasswordR2"
-        app:layout_constraintTop_toTopOf="@+id/editTextPasswordR2" />
+    <!--<EditText-->
+        <!--android:id="@+id/phone_register"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/password_2_register"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:ems="10"-->
+        <!--android:hint="Phone "-->
+        <!--android:inputType="phone"-->
+        <!--android:textColor="@color/colorTransparentWhite"-->
+        <!--android:textColorHint="@color/colorPrimary" />-->
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/register_regactivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="221dp"
+        android:background="@color/colorAccent"
         android:text="Register"
-        app:layout_constraintEnd_toEndOf="@+id/editTextPasswordR2"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPasswordR2"
-        android:onClick="registration"
-        />
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@android:style/Holo.ButtonBar"
-        android:text="Already have account? Click here to login"
-        android:textSize="10dp"
-        android:textColor="@color/LinkColor"
+        android:textColor="@color/colorWhite"
+        android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/button3"
-        app:layout_constraintRight_toLeftOf="parent"
-        app:layout_constraintLeft_toRightOf="parent"
-        android:onClick="gotoLogin"/>
+        android:onClick="registration"/>
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/login_regactivity_but"
+        android:layout_alignParentStart="true"
+        android:text="Already have an account?"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary" />
+
+    <Button
+        android:id="@+id/login_regactivity_but"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:textSize="16dp"
-        android:text=""
-        app:layout_constraintEnd_toEndOf="@+id/button4"
-        app:layout_constraintStart_toStartOf="@+id/button4"
-        app:layout_constraintTop_toBottomOf="@+id/button4" />
-</android.support.constraint.ConstraintLayout>
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="138dp"
+        android:background="@android:color/transparent"
+        android:text="LOGIN"
+        android:textColor="@color/colorAccent"
+        android:onClick="gotoLogin"/>
+</RelativeLayout>
