@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddDrugDetails">
+
+    <TextView
+        android:id="@+id/name_of_drug_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Medicine Name:"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        />
+    <EditText
+        android:id="@+id/name_of_drug"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.Material.AutoCompleteTextView"
+        app:layout_constraintTop_toBottomOf="@+id/name_of_drug_label"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:hint="Enter medicine name"/>
+    <TextView
+        android:id="@+id/stock_of_drug_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/name_of_drug"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Stock:"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        />
+    <EditText
+        android:id="@+id/stock_of_drug"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.Material.AutoCompleteTextView"
+        app:layout_constraintTop_toBottomOf="@+id/stock_of_drug_label"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:hint="Enter stock"/>
+
+    <TextView
+        android:id="@+id/cost_of_drug_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/stock_of_drug"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Cost:"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        />
+    <EditText
+        android:id="@+id/cost_of_drug"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@android:style/Widget.Material.AutoCompleteTextView"
+        app:layout_constraintTop_toBottomOf="@+id/cost_of_drug_label"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:hint="Enter cost"/>
+
+    <Button
+        android:id="@+id/addDrugToDB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add"
+        app:layout_constraintTop_toBottomOf="@+id/cost_of_drug"
+        app:layout_constraintRight_toRightOf="@+id/cost_of_drug"
+        android:layout_marginTop="8dp"
+        android:onClick="addToBD"/>
+</android.support.constraint.ConstraintLayout>
