@@ -10,21 +10,19 @@ import android.widget.TextView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-import java.awt.font.TextAttribute;
-
-public class NoteAdapter extends FirestoreRecyclerAdapter<PharmNote,NoteAdapter.NoteHolder> {
+public class NoteAdapter extends FirestoreRecyclerAdapter<Medicine,NoteAdapter.NoteHolder> {
 
 
-    public NoteAdapter(@NonNull FirestoreRecyclerOptions<PharmNote> options) {
+    public NoteAdapter(@NonNull FirestoreRecyclerOptions<Medicine> options) {
         super(options);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull NoteHolder holder, int position, @NonNull PharmNote model) {
-        holder.textView_pharm_name.setText(model.getPharm_name());
-        holder.textView_pharm_contact.setText(model.getPharm_contact());
-        holder.textView_pharm_address.setText(model.getPharm_address());
-        holder.textView_priority.setText(String.valueOf(model.getPriority()));
+    protected void onBindViewHolder(@NonNull NoteHolder holder, int position, @NonNull Medicine model) {
+        holder.medicine_name.setText(model.getName());
+        holder.medicine_cost.setText(model.getCost()+"");
+        holder.medicine_qty.setText(model.getStock()+"");
+
 
     }
 
@@ -37,15 +35,15 @@ public class NoteAdapter extends FirestoreRecyclerAdapter<PharmNote,NoteAdapter.
 
     class NoteHolder extends RecyclerView.ViewHolder{
 
-           TextView textView_pharm_name;
-        TextView textView_pharm_contact;
-        TextView textView_pharm_address;
+           TextView medicine_name;
+        TextView medicine_cost;
+        TextView medicine_qty;
         TextView textView_priority;
         public NoteHolder(View itemView) {
             super(itemView);
-            textView_pharm_name=itemView.findViewById(R.id.pharmacy_name);
-            textView_pharm_contact=itemView.findViewById(R.id.pharmacy_contact);
-            textView_pharm_address=itemView.findViewById(R.id.pharmacy_address);
+            medicine_name=itemView.findViewById(R.id.medicine_name);
+            medicine_cost=itemView.findViewById(R.id.medicine_cost);
+            medicine_qty=itemView.findViewById(R.id.medicine_qty);
             textView_priority=itemView.findViewById(R.id.text_view_priority);
 
         }

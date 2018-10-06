@@ -1,33 +1,16 @@
 package com.example.vishn.miniproject;
 
-public class PharmNote {
+import java.io.Serializable;
+
+public class PharmNote implements Serializable{
     private String pharm_name;
-    private String pharm_contact;
+    private String pharm_phone1;
+    private String pharm_phone2;
+
     private String pharm_address;
 
-    public String getPharm_dp() {
-        return pharm_dp;
-    }
-
-    public void setPharm_dp(String pharm_dp) {
-        this.pharm_dp = pharm_dp;
-    }
 
     private String pharm_dp;
-    private int priority;
-
-    public PharmNote()
-    {
-
-    }
-    public PharmNote(String pharm_name, String pharm_contact, String pharm_address, int priority, String pharm_dp)
-    {
-        this.pharm_name=pharm_name;
-        this.pharm_contact=pharm_contact;
-        this.pharm_address=pharm_address;
-        this.priority=priority;
-        this.pharm_dp=pharm_dp;
-    }
 
     public String getPharm_name() {
         return pharm_name;
@@ -37,12 +20,20 @@ public class PharmNote {
         this.pharm_name = pharm_name;
     }
 
-    public String getPharm_contact() {
-        return pharm_contact;
+    public String getPharm_phone1() {
+        return pharm_phone1;
     }
 
-    public void setPharm_contact(String pharm_contact) {
-        this.pharm_contact = pharm_contact;
+    public void setPharm_phone1(String pharm_phone1) {
+        this.pharm_phone1 = pharm_phone1;
+    }
+
+    public String getPharm_phone2() {
+        return pharm_phone2;
+    }
+
+    public void setPharm_phone2(String pharm_phone2) {
+        this.pharm_phone2 = pharm_phone2;
     }
 
     public String getPharm_address() {
@@ -53,12 +44,26 @@ public class PharmNote {
         this.pharm_address = pharm_address;
     }
 
-    public int getPriority() {
-        return priority;
+    public String getPharm_dp() {
+        return pharm_dp;
     }
 
-    public void setPriority(int priority) {
-        this.priority = priority;
+    public void setPharm_dp(String pharm_dp) {
+        this.pharm_dp = pharm_dp;
+    }
+
+    public PharmNote(String pharm_name, String pharm_phone1, String pharm_phone2, String pharm_address, String pharm_dp) {
+
+        this.pharm_name = pharm_name;
+        this.pharm_phone1 = pharm_phone1;
+        this.pharm_phone2 = pharm_phone2;
+        this.pharm_address = pharm_address;
+        this.pharm_dp = pharm_dp;
+    }
+
+    public PharmNote()
+    {
+
     }
 
 

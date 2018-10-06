@@ -28,11 +28,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FileDownloadTask;
@@ -47,9 +50,10 @@ import java.io.IOException;
 public class HomePageActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
-    private CollectionReference pharmRef=db.collection("pharmacies");
+    private CollectionReference medRef=db.collection("medicines");
     private NoteAdapter adapter;
     private StorageReference storageRef;
+    private PharmNote pharmacy;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +74,7 @@ public class HomePageActivity extends AppCompatActivity
 
         final View header=navigationView.getHeaderView(0);
         final ImageView dp=header.findViewById(R.id.display_pic);
+        final TextView pharma_name=header.findViewById(R.id.header_name);
         final long THREE_MB=3*1024*1024;
         storageRef=FirebaseStorage.getInstance().getReference().child(FirebaseAuth.getInstance().getCurrentUser().getEmail()+"/dp.jpg");
         storageRef.getBytes(THREE_MB)
@@ -88,7 +93,24 @@ public class HomePageActivity extends AppCompatActivity
 //                        Toast.makeText(HomePageActivity.this,"Couldnt load dp",Toast.LENGTH_SHORT).show();
                     }
                 });
-
+        pharmacy=new PharmNote();
+        db.collection("pharmacies").document(FirebaseAuth.getInstance().getCurrentUser().getEmail())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot!=null){
+                            pharmacy=documentSnapshot.toObject(PharmNote.class);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(HomePageActivity.this,"Pharmacy details not present",Toast.LENGTH_LONG).show();
+                    }
+                });
+        pharma_name.setText(pharmacy.getPharm_name());
         TextView tset1=(TextView)header.findViewById(R.id.header_email);
         tset1.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
@@ -106,8 +128,8 @@ public class HomePageActivity extends AppCompatActivity
     }
     private void setUpRecyclerview()
     {
-        Query query=pharmRef.orderBy("priority",Query.Direction.DESCENDING);
-        FirestoreRecyclerOptions<PharmNote>options=new FirestoreRecyclerOptions.Builder<PharmNote>().setQuery(query,PharmNote.class).build();
+        Query query=medRef.orderBy("name");
+        FirestoreRecyclerOptions<Medicine>options=new FirestoreRecyclerOptions.Builder<Medicine>().setQuery(query,Medicine.class).build();
         adapter= new NoteAdapter(options);
         RecyclerView recyclerView=findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -166,11 +188,13 @@ public class HomePageActivity extends AppCompatActivity
 
         if (id == R.id.nav_edit_pharma_details) {
             Intent intent=new Intent(this,EditPharmaDetails.class);
+            intent.putExtra("previousDetails",pharmacy);
             startActivity(intent);
 
 
         } else if (id==R.id.nav_add_data){
-            fragment=new Menu1();
+            Intent intent=new Intent(this,AddDrugDetails.class);
+            startActivity(intent);
         } else if (id == R.id.nav_edit_data) {
             fragment=new Menu2();
 
