@@ -18,6 +18,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -65,18 +66,15 @@ public class HomePageActivity extends AppCompatActivity
     private StorageReference storageRef;
     private PharmNote pharmacy;
     private Medicine allMeds;
+    private RecyclerView recyclerView;
     private String m_Text = "";
     private String[] mednames={"medicine1","medicine2","medicine3","medicine4","medicine5"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-        if(getIntent().hasExtra("recycler_view_state")){
-            setUpRecyclerview(getIntent().getStringExtra("recycler_view_state"));
-        }
-        else {
-            setUpRecyclerview();
-        }
+        recyclerView=findViewById(R.id.recycler_view);
+        setUpRecyclerview();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -95,7 +93,7 @@ public class HomePageActivity extends AppCompatActivity
         final ImageView dp=header.findViewById(R.id.display_pic);
         final TextView pharma_name=header.findViewById(R.id.header_name);
         final long THREE_MB=3*1024*1024;
-        storageRef=FirebaseStorage.getInstance().getReference().child(FirebaseAuth.getInstance().getCurrentUser().getUid()+".jpg");
+        storageRef=FirebaseStorage.getInstance().getReference().child(FirebaseAuth.getInstance().getCurrentUser().getEmail() + "/dp.jpg");
         storageRef.getBytes(THREE_MB)
                 .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
@@ -133,7 +131,6 @@ public class HomePageActivity extends AppCompatActivity
         pharma_name.setText(pharmacy.getPharm_name());
         TextView tset1=(TextView)header.findViewById(R.id.header_email);
         tset1.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-
  //     welcome();
     }
 
@@ -151,7 +148,6 @@ public class HomePageActivity extends AppCompatActivity
         Query query=medRef.orderBy("name").whereEqualTo("pharmacy",FirebaseAuth.getInstance().getUid());
         FirestoreRecyclerOptions<Medicine>options=new FirestoreRecyclerOptions.Builder<Medicine>().setQuery(query,Medicine.class).build();
         adapter= new NoteAdapter(options);
-        RecyclerView recyclerView=findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -161,7 +157,6 @@ public class HomePageActivity extends AppCompatActivity
         Query query=medRef.orderBy("name").whereEqualTo("pharmacy",FirebaseAuth.getInstance().getUid()).whereEqualTo("name",name);
         FirestoreRecyclerOptions<Medicine>options=new FirestoreRecyclerOptions.Builder<Medicine>().setQuery(query,Medicine.class).build();
         adapter= new NoteAdapter(options);
-        RecyclerView recyclerView=findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);

@@ -76,7 +76,7 @@ public class EditPharmaDetails extends Activity {
             progressDialog.setTitle("Uploading");
             progressDialog.show();
 
-            StorageReference dp_upload_ref = storageRef.child("" + FirebaseAuth.getInstance().getCurrentUser().getEmail() + "/dp.jpg");
+            StorageReference dp_upload_ref = storageRef.child(FirebaseAuth.getInstance().getCurrentUser().getEmail() + "/dp.jpg");
             dp_upload_ref.putFile(selectImage)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override

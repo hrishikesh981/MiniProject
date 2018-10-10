@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/F:/AndroidStudio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_add_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/D:/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_remove_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,8 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_add_black_24dp" />
+                            <entry key="color" value="f7f7ff" />
+                            <entry key="outputName" value="sub_fab" />
                             <entry key="sourceFile" value="C:\Users\ASUS" />
                           </map>
                         </option>
