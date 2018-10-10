@@ -13,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -38,6 +39,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -46,6 +48,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class HomePageActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -54,6 +57,8 @@ public class HomePageActivity extends AppCompatActivity
     private NoteAdapter adapter;
     private StorageReference storageRef;
     private PharmNote pharmacy;
+    private Medicine allMeds;
+    private String[] mednames={"medicine1","medicine2","medicine3","medicine4","medicine5"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +81,7 @@ public class HomePageActivity extends AppCompatActivity
         final ImageView dp=header.findViewById(R.id.display_pic);
         final TextView pharma_name=header.findViewById(R.id.header_name);
         final long THREE_MB=3*1024*1024;
-        storageRef=FirebaseStorage.getInstance().getReference().child(FirebaseAuth.getInstance().getCurrentUser().getEmail()+"/dp.jpg");
+        storageRef=FirebaseStorage.getInstance().getReference().child(FirebaseAuth.getInstance().getUid()+".jpg");
         storageRef.getBytes(THREE_MB)
                 .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
@@ -94,7 +99,7 @@ public class HomePageActivity extends AppCompatActivity
                     }
                 });
         pharmacy=new PharmNote();
-        db.collection("pharmacies").document(FirebaseAuth.getInstance().getCurrentUser().getEmail())
+        db.collection("pharmacies").document(FirebaseAuth.getInstance().getUid())
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -110,6 +115,7 @@ public class HomePageActivity extends AppCompatActivity
                         Toast.makeText(HomePageActivity.this,"Pharmacy details not present",Toast.LENGTH_LONG).show();
                     }
                 });
+
         pharma_name.setText(pharmacy.getPharm_name());
         TextView tset1=(TextView)header.findViewById(R.id.header_email);
         tset1.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
@@ -194,6 +200,7 @@ public class HomePageActivity extends AppCompatActivity
 
         } else if (id==R.id.nav_add_data){
             Intent intent=new Intent(this,AddDrugDetails.class);
+            intent.putExtra("mednames",mednames);
             startActivity(intent);
         } else if (id == R.id.nav_edit_data) {
             fragment=new Menu2();

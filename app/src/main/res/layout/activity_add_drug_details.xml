@@ -16,7 +16,7 @@
         android:text="Medicine Name:"
         android:textAppearance="@style/TextAppearance.AppCompat"
         />
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/name_of_drug"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -38,13 +38,11 @@ public class NoteAdapter extends FirestoreRecyclerAdapter<Medicine,NoteAdapter.N
            TextView medicine_name;
         TextView medicine_cost;
         TextView medicine_qty;
-        TextView textView_priority;
         public NoteHolder(View itemView) {
             super(itemView);
             medicine_name=itemView.findViewById(R.id.medicine_name);
             medicine_cost=itemView.findViewById(R.id.medicine_cost);
             medicine_qty=itemView.findViewById(R.id.medicine_qty);
-            textView_priority=itemView.findViewById(R.id.text_view_priority);
 
         }
     }

@@ -56,24 +56,11 @@ public class EditPharmaDetails extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_pharma_details);
-        pharmacy= (PharmNote) getIntent().getSerializableExtra("previousDetails");
-        pharma_name = findViewById(R.id.pharmacy_name_edit);pharma_name.setText(pharmacy.getPharm_name());
-        pharma_phone1 = findViewById(R.id.pharmacy_phone1_edit);pharma_phone1.setText(pharmacy.getPharm_phone1());
-        pharma_phone2 = findViewById(R.id.pharmacy_phone2_edit);pharma_phone2.setText(pharmacy.getPharm_phone2());
-        pharma_addr = findViewById(R.id.pharmacy_address_edit);
-        String[] latlong=pharmacy.getPharm_address().split(",");
-        double lat=Double.parseDouble(latlong[0]);
-        double lng=Double.parseDouble(latlong[1]);
-        Geocoder geocoder;
-        List<Address> address=null;
-        geocoder=new Geocoder(this, Locale.getDefault());
-        try {
-            address=geocoder.getFromLocation(lat,lng,1);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        pharma_addr.setText(address.get(0).getAddressLine(0));
 
+        pharma_name = findViewById(R.id.pharmacy_name_edit);
+        pharma_phone1 = findViewById(R.id.pharmacy_phone1_edit);
+        pharma_phone2 = findViewById(R.id.pharmacy_phone2_edit);
+        pharma_addr = findViewById(R.id.pharmacy_address_edit);
         display_picture = findViewById(R.id.display_picture);
 
 
@@ -133,14 +120,14 @@ public class EditPharmaDetails extends Activity {
         pname = pharma_name.getText().toString();
         paddress = pharma_addr_coords;
         phone1 = pharma_phone1.getText().toString();
-        dp_url = FirebaseAuth.getInstance().getCurrentUser().getEmail() + "/dp.jpg";
+        dp_url = FirebaseAuth.getInstance().getUid() + ".jpg";
         phone2 = pharma_phone2.getText().toString();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference pharmRef = FirebaseFirestore.getInstance().collection("pharmacies").document(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        DocumentReference pharmRef = FirebaseFirestore.getInstance().collection("pharmacies").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
         pharmRef.set(new PharmNote(pname,phone1,phone2,paddress,dp_url)).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(EditPharmaDetails.this,"Details Updated",Toast.LENGTH_LONG).show();
+                Toast.makeText(EditPharmaDetails.this,"Details Added",Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(EditPharmaDetails.this, HomePageActivity.class);
                 startActivity(intent);
             }

@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,12 +17,14 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class AddDrugDetails extends AppCompatActivity {
-    EditText name,stock,cost;
+    EditText stock,cost;
+    AutoCompleteTextView name;
     FirebaseFirestore db;
-
+    String[] mednames;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,11 +33,16 @@ public class AddDrugDetails extends AppCompatActivity {
         stock=findViewById(R.id.stock_of_drug);
         cost=findViewById(R.id.cost_of_drug);
         db=FirebaseFirestore.getInstance();
+        mednames=getIntent().getStringArrayExtra("mednames");
+        ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,mednames);
+        name.setThreshold(1);
+        name.setAdapter(arrayAdapter);
+
     }
 
     public void addToBD(View view) {
         CollectionReference cref=db.collection("medicines");
-        cref.add(new Medicine(name.getText().toString(), Integer.parseInt(stock.getText().toString()),Double.parseDouble(cost.getText().toString()), FirebaseAuth.getInstance().getCurrentUser().getEmail()))
+        cref.add(new Medicine(name.getText().toString(), Integer.parseInt(stock.getText().toString()),Double.parseDouble(cost.getText().toString()), FirebaseAuth.getInstance().getUid()))
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
