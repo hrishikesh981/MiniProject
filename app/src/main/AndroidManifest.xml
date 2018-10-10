@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--<activity android:name=".LoginActivity" />-->
+        <!-- <activity android:name=".LoginActivity" /> -->
         <activity android:name=".RegistrationActivity" />
         <activity android:name=".EditPharmaDetails" />
         <activity
@@ -48,7 +48,7 @@
         <!-- <activity -->
         <!-- android:name=".MapsActivity" -->
         <!-- android:label="@string/title_activity_maps"></activity> -->
-        <activity android:name=".AddDrugDetails"></activity>
+        <activity android:name=".AddDrugDetails" />
     </application>
 
 </manifest>

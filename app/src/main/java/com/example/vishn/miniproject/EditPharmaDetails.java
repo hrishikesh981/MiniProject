@@ -120,7 +120,7 @@ public class EditPharmaDetails extends Activity {
         pname = pharma_name.getText().toString();
         paddress = pharma_addr_coords;
         phone1 = pharma_phone1.getText().toString();
-        dp_url = FirebaseAuth.getInstance().getUid() + ".jpg";
+        dp_url = FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg";
         phone2 = pharma_phone2.getText().toString();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference pharmRef = FirebaseFirestore.getInstance().collection("pharmacies").document(FirebaseAuth.getInstance().getCurrentUser().getUid());

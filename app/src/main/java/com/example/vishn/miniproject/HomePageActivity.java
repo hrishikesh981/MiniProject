@@ -1,6 +1,8 @@
 package com.example.vishn.miniproject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
@@ -11,8 +13,10 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -23,6 +27,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,12 +65,19 @@ public class HomePageActivity extends AppCompatActivity
     private StorageReference storageRef;
     private PharmNote pharmacy;
     private Medicine allMeds;
+    private String m_Text = "";
     private String[] mednames={"medicine1","medicine2","medicine3","medicine4","medicine5"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-        setUpRecyclerview();
+        if(getIntent().hasExtra("recycler_view_state")){
+            setUpRecyclerview(getIntent().getStringExtra("recycler_view_state"));
+        }
+        else {
+            setUpRecyclerview();
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -81,7 +95,7 @@ public class HomePageActivity extends AppCompatActivity
         final ImageView dp=header.findViewById(R.id.display_pic);
         final TextView pharma_name=header.findViewById(R.id.header_name);
         final long THREE_MB=3*1024*1024;
-        storageRef=FirebaseStorage.getInstance().getReference().child(FirebaseAuth.getInstance().getUid()+".jpg");
+        storageRef=FirebaseStorage.getInstance().getReference().child(FirebaseAuth.getInstance().getCurrentUser().getUid()+".jpg");
         storageRef.getBytes(THREE_MB)
                 .addOnSuccessListener(new OnSuccessListener<byte[]>() {
                     @Override
@@ -134,7 +148,17 @@ public class HomePageActivity extends AppCompatActivity
     }
     private void setUpRecyclerview()
     {
-        Query query=medRef.orderBy("name");
+        Query query=medRef.orderBy("name").whereEqualTo("pharmacy",FirebaseAuth.getInstance().getUid());
+        FirestoreRecyclerOptions<Medicine>options=new FirestoreRecyclerOptions.Builder<Medicine>().setQuery(query,Medicine.class).build();
+        adapter= new NoteAdapter(options);
+        RecyclerView recyclerView=findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+    }
+    private void setUpRecyclerview(String name)
+    {
+        Query query=medRef.orderBy("name").whereEqualTo("pharmacy",FirebaseAuth.getInstance().getUid()).whereEqualTo("name",name);
         FirestoreRecyclerOptions<Medicine>options=new FirestoreRecyclerOptions.Builder<Medicine>().setQuery(query,Medicine.class).build();
         adapter= new NoteAdapter(options);
         RecyclerView recyclerView=findViewById(R.id.recycler_view);
@@ -207,7 +231,8 @@ public class HomePageActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_sign_out) {
             FirebaseAuth.getInstance().signOut();
-            gotoLogin();
+            Intent intent=new Intent(this,LoginActivity.class);
+            startActivity(intent);
         }
         if (fragment != null) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -220,9 +245,42 @@ public class HomePageActivity extends AppCompatActivity
         return true;
     }
 
-    public void gotoLogin()
-    {
-        Intent intent=new Intent(this,LoginActivity.class);
+    public void addMedicine(View view) {
+        Intent intent=new Intent(this,AddDrugDetails.class);
+        intent.putExtra("mednames",mednames);
         startActivity(intent);
+    }
+
+    public void searchMedicine(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Search");
+
+// Set up the input
+        final AutoCompleteTextView input = new AutoCompleteTextView(this);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        ArrayAdapter<String> arrayAdapter= new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, mednames);
+        input.setThreshold(1);
+        input.setAdapter(arrayAdapter);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                m_Text = input.getText().toString();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+        while (m_Text!=""){
+        }
+
     }
 }

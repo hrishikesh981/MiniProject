@@ -26,8 +26,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             android:src="@drawable/ic_add_black_24dp"
+            android:onClick="addMedicine"
+
+            />
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/search_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="8dp"
+            android:background="@color/yellow"
+            android:src="@drawable/search_icon"
+            android:onClick="searchMedicine"
+
 
             />
 
