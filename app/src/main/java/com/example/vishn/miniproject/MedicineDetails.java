@@ -1,5 +1,6 @@
 package com.example.vishn.miniproject;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -88,26 +90,27 @@ public class MedicineDetails extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("TAG::", document.getId() + " => " + document.getData());
                                 Toast.makeText(MedicineDetails.this, document.getId(),Toast.LENGTH_LONG).show();
-                                medicine_pharma_id= document.getId();
+                                db.collection("medicines").document(document.getId())
+                                        .update("cost",Double.parseDouble(cost.getText().toString()),"stock",Integer.parseInt(stock.getText().toString()))
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("TAG::", "DocumentSnapshot successfully updated!");
+                                                Toast.makeText(MedicineDetails.this,"Details Updated",Toast.LENGTH_LONG).show();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w("TAG::", "Error updating document", e);
+                                            }
+                                        });
                             }
                         } else {
                             Log.d("TAG::", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-//        db.collection("medicines").document(medicine_pharma_id)
-//                .update("cost",Double.parseDouble(cost.getText().toString()),"stock",Integer.parseInt(stock.getText().toString()))
-//                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void aVoid) {
-//                        Log.d("TAG::", "DocumentSnapshot successfully updated!");
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Log.w("TAG::", "Error updating document", e);
-//                    }
-//                });
+
     }
 }
