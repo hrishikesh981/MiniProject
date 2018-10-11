@@ -97,6 +97,8 @@ public class MedicineDetails extends AppCompatActivity {
                                             public void onSuccess(Void aVoid) {
                                                 Log.d("TAG::", "DocumentSnapshot successfully updated!");
                                                 Toast.makeText(MedicineDetails.this,"Details Updated",Toast.LENGTH_LONG).show();
+                                                Intent intent=new Intent(MedicineDetails.this,HomePageActivity.class);
+                                                startActivity(intent);
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {

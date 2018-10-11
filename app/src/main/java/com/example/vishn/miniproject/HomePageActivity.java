@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -72,6 +73,7 @@ public class HomePageActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("DATABASE");
         setContentView(R.layout.activity_home_page);
         recyclerView=findViewById(R.id.recycler_view);
         setUpRecyclerview();
@@ -151,6 +153,20 @@ public class HomePageActivity extends AppCompatActivity
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                adapter.deleteItem(viewHolder.getAdapterPosition());
+
+            }
+        }).attachToRecyclerView(recyclerView);
     }
     private void setUpRecyclerview(String name)
     {
@@ -160,6 +176,20 @@ public class HomePageActivity extends AppCompatActivity
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder viewHolder1) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+                adapter.deleteItem(viewHolder.getAdapterPosition());
+
+            }
+        }).attachToRecyclerView(recyclerView);
     }
 
     @Override
@@ -217,13 +247,6 @@ public class HomePageActivity extends AppCompatActivity
             startActivity(intent);
 
 
-        } else if (id==R.id.nav_add_data){
-            Intent intent=new Intent(this,AddDrugDetails.class);
-            intent.putExtra("mednames",mednames);
-            startActivity(intent);
-        } else if (id == R.id.nav_edit_data) {
-            fragment=new Menu2();
-
         } else if (id == R.id.nav_sign_out) {
             FirebaseAuth.getInstance().signOut();
             Intent intent=new Intent(this,LoginActivity.class);
@@ -264,6 +287,13 @@ public class HomePageActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 m_Text = input.getText().toString();
+                setUpRecyclerview(m_Text);
+                FloatingActionButton search= findViewById(R.id.search_data);
+                FloatingActionButton add= findViewById(R.id.add_data);
+
+                onStop();
+                onStart();
+
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

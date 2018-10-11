@@ -3,17 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_add_data"
-            android:icon="@drawable/add_box"
-            android:title="Add Data" />
-        <item
-            android:id="@+id/nav_edit_data"
-            android:icon="@drawable/edit"
-            android:title="Edit Data" />
+    <!--<group android:checkableBehavior="single">-->
+        <!--<item-->
+            <!--android:id="@+id/nav_add_data"-->
+            <!--android:icon="@drawable/add_box"-->
+            <!--android:title="Add Data" />-->
+        <!--<item-->
+            <!--android:id="@+id/nav_edit_data"-->
+            <!--android:icon="@drawable/edit"-->
+            <!--android:title="Edit Data" />-->
 
-    </group>
+    <!--</group>-->
     <item
         android:id="@+id/nav_edit_pharma_details"
         android:title="Edit Pharmacy Details"/>

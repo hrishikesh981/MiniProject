@@ -33,6 +33,10 @@ public class NoteAdapter extends FirestoreRecyclerAdapter<Medicine,NoteAdapter.N
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.pharm_details,parent,false);
         return new NoteHolder(v);
     }
+    public void deleteItem(int position){
+        getSnapshots().getSnapshot(position).getReference().delete();
+
+    }
 
     class NoteHolder extends RecyclerView.ViewHolder{
 
