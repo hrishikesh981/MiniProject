@@ -1,12 +1,18 @@
 package com.example.vishn.miniproject;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -26,6 +32,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,12 +41,11 @@ public class MedicineDetails extends AppCompatActivity {
     EditText stock,cost;
     FloatingActionButton add_stock,sub_stock,add_cost,sub_cost;
     ExpandableListView details;
-    FirebaseFirestore db;
-    String medicine_pharma_id;
     private ExpandableListView expandableListView;
     private ExpandableListAdapter expandableListAdapter;
     private List<String> expandableListTitle;
     private HashMap<String, List<String>> expandableListDetail;
+    private double cp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +118,7 @@ public class MedicineDetails extends AppCompatActivity {
     }
 
     public void updateMedicineDetails(View view) {
+        FirebaseFirestore db=FirebaseFirestore.getInstance();
         db.collection("medicines")
                 .whereEqualTo("name",medicine.getText().toString())
                 .whereEqualTo("pharmacy",FirebaseAuth.getInstance().getUid())
@@ -130,8 +137,8 @@ public class MedicineDetails extends AppCompatActivity {
                                             public void onSuccess(Void aVoid) {
                                                 Log.d("TAG::", "DocumentSnapshot successfully updated!");
                                                 Toast.makeText(MedicineDetails.this,"Details Updated",Toast.LENGTH_LONG).show();
-                                                Intent intent=new Intent(MedicineDetails.this,HomePageActivity.class);
-                                                startActivity(intent);
+                                                financing(db);
+
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {
@@ -147,5 +154,103 @@ public class MedicineDetails extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    private void financing(FirebaseFirestore db) {
+        int initialStock=Integer.parseInt(getIntent().getStringExtra("medicine_stock"));
+        int finalStock=Integer.parseInt(stock.getText().toString());
+        if(initialStock==finalStock){
+            Intent intent=new Intent(MedicineDetails.this,HomePageActivity.class);
+            startActivity(intent);
+        }
+        else if(initialStock<finalStock){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Restock Financing");
+            final EditText input = new EditText(this);
+            input.setHint("Enter cost price");
+            input.setHintTextColor(Color.GRAY);
+            input.setTextColor(Color.BLACK);
+            input.setInputType(InputType.TYPE_CLASS_NUMBER);
+            builder.setView(input);
+
+// Set up the buttons
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    cp = Double.parseDouble(input.getText().toString());
+                    db.collection("financing")
+                            .add(new FinancingDTO((initialStock-finalStock)*cp, Calendar.getInstance().getTime(),getIntent().getStringExtra("medicine_name"),FirebaseAuth.getInstance().getUid()))
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Double spent=(finalStock-initialStock)*cp;
+                                    Toast.makeText(MedicineDetails.this,spent+" spent",Toast.LENGTH_LONG).show();
+                                    Intent intent=new Intent(MedicineDetails.this,HomePageActivity.class);
+                                    startActivity(intent);
+                                }
+
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(MedicineDetails.this,e.getStackTrace().toString(),Toast.LENGTH_LONG).show();
+                            Intent intent=new Intent(MedicineDetails.this,HomePageActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                    dialog.cancel();
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+        }else if(initialStock>finalStock){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Restock Financing");
+            final TextView moneyEarnt=new TextView(this);
+            moneyEarnt.setTextColor(Color.BLACK);
+            final double sale=(initialStock-finalStock)*(Double.parseDouble(stock.getText().toString()));
+            moneyEarnt.setText("Sale : "+sale);
+            builder.setView(moneyEarnt);
+
+// Set up the buttons
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    FirebaseFirestore db2=FirebaseFirestore.getInstance();
+                    db2.collection("financing")
+                            .add(new FinancingDTO(sale, Calendar.getInstance().getTime(),getIntent().getStringExtra("medicine_name"),FirebaseAuth.getInstance().getUid()))
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Toast.makeText(MedicineDetails.this,sale+" earnt",Toast.LENGTH_LONG).show();
+                                    Intent intent=new Intent(MedicineDetails.this,HomePageActivity.class);
+                                    startActivity(intent);
+                                }
+
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(MedicineDetails.this,e.getStackTrace().toString(),Toast.LENGTH_LONG).show();
+                            Intent intent=new Intent(MedicineDetails.this,HomePageActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                    dialog.cancel();
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.show();
+        }
     }
 }
