@@ -18,6 +18,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 public class AddDrugDetails extends AppCompatActivity {
@@ -48,21 +50,28 @@ public class AddDrugDetails extends AppCompatActivity {
     }
 
     public void addToBD(View view) {
-        CollectionReference cref=db.collection("medicines");
-        cref.add(new Medicine(name.getText().toString(), Integer.parseInt(stock.getText().toString()),Double.parseDouble(cost.getText().toString()), FirebaseAuth.getInstance().getUid()))
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(AddDrugDetails.this, "ADD HUA", Toast.LENGTH_LONG).show();
-                        Intent intent=new Intent(AddDrugDetails.this,HomePageActivity.class);
-                        startActivity(intent);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(AddDrugDetails.this,e.getStackTrace().toString(),Toast.LENGTH_LONG).show();
-                    }
-                });
+        List<String> mednames_list= Arrays.asList(mednames);
+        if(!mednames_list.contains(name.getText().toString())){
+            Toast.makeText(this,"Medicine does not exist",Toast.LENGTH_LONG).show();
+        }
+        else {
+            CollectionReference cref=db.collection("medicines");
+            cref.add(new Medicine(name.getText().toString(), Integer.parseInt(stock.getText().toString()),Double.parseDouble(cost.getText().toString()), FirebaseAuth.getInstance().getUid()))
+                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        @Override
+                        public void onSuccess(DocumentReference documentReference) {
+                            Toast.makeText(AddDrugDetails.this, "ADD HUA", Toast.LENGTH_LONG).show();
+                            Intent intent=new Intent(AddDrugDetails.this,HomePageActivity.class);
+                            startActivity(intent);
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(AddDrugDetails.this,e.getStackTrace().toString(),Toast.LENGTH_LONG).show();
+                        }
+                    });
+        }
+
     }
 }
