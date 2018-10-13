@@ -48,6 +48,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
@@ -69,7 +70,7 @@ public class HomePageActivity extends AppCompatActivity
     private Medicine allMeds;
     private RecyclerView recyclerView;
     private String m_Text = "";
-    private String[] mednames={"medicine1","medicine2","medicine3","medicine4","medicine5"};
+    private String[] mednames;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +121,7 @@ public class HomePageActivity extends AppCompatActivity
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if(documentSnapshot!=null){
                             pharmacy=documentSnapshot.toObject(PharmNote.class);
+                            pharma_name.setText(pharmacy.getPharm_name());
                         }
                     }
                 })
@@ -129,8 +131,25 @@ public class HomePageActivity extends AppCompatActivity
                         Toast.makeText(HomePageActivity.this,"Pharmacy details not present",Toast.LENGTH_LONG).show();
                     }
                 });
+        db.collection("medicine_master")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            ArrayList<String> mn= new ArrayList<>();
+                            for(QueryDocumentSnapshot document : task.getResult()){
+                                Log.d("----", document.getId() + " => " + document.get("name"));
+                                mn.add(document.get("name")+"");
+                            }
+                            mednames=new String[mn.size()];
+                            mednames=mn.toArray(mednames);
+                            for(String s:mednames)
+                                Log.d("----", s);
+                        }
+                    }
+                });
 
-        pharma_name.setText(pharmacy.getPharm_name());
         TextView tset1=(TextView)header.findViewById(R.id.header_email);
         tset1.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
  //     welcome();
@@ -247,7 +266,12 @@ public class HomePageActivity extends AppCompatActivity
             startActivity(intent);
 
 
-        } else if (id == R.id.nav_sign_out) {
+        } else if (id == R.id.nav_add_medicine) {
+            Intent intent=new Intent(this,AddNewMedicine.class);
+            intent.putExtra("mednames",mednames);
+            startActivity(intent);
+        }
+        else if (id == R.id.nav_sign_out) {
             FirebaseAuth.getInstance().signOut();
             Intent intent=new Intent(this,LoginActivity.class);
             startActivity(intent);
@@ -287,12 +311,10 @@ public class HomePageActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 m_Text = input.getText().toString();
-                setUpRecyclerview(m_Text);
-                FloatingActionButton search= findViewById(R.id.search_data);
-                FloatingActionButton add= findViewById(R.id.add_data);
-
-                onStop();
-                onStart();
+                if(!m_Text.matches(""))
+                    setUpRecyclerview(m_Text);
+                adapter.stopListening();
+                adapter.startListening();
 
             }
         });

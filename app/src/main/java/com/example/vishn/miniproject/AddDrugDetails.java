@@ -40,6 +40,13 @@ public class AddDrugDetails extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(this,HomePageActivity.class);
+        startActivity(intent);
+    }
+
     public void addToBD(View view) {
         CollectionReference cref=db.collection("medicines");
         cref.add(new Medicine(name.getText().toString(), Integer.parseInt(stock.getText().toString()),Double.parseDouble(cost.getText().toString()), FirebaseAuth.getInstance().getUid()))

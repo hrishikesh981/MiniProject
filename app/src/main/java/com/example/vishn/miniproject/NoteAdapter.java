@@ -27,6 +27,11 @@ public class NoteAdapter extends FirestoreRecyclerAdapter<Medicine,NoteAdapter.N
 
     }
 
+    @Override
+    public void onViewRecycled(@NonNull NoteHolder holder) {
+        super.onViewRecycled(holder);
+    }
+
     @NonNull
     @Override
     public NoteHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -4,10 +4,10 @@
     tools:showIn="navigation_view">
 
     <!--<group android:checkableBehavior="single">-->
-        <!--<item-->
-            <!--android:id="@+id/nav_add_data"-->
-            <!--android:icon="@drawable/add_box"-->
-            <!--android:title="Add Data" />-->
+        <item
+            android:id="@+id/nav_add_medicine"
+            android:icon="@drawable/add_box"
+            android:title="Add New Medicine" />
         <!--<item-->
             <!--android:id="@+id/nav_edit_data"-->
             <!--android:icon="@drawable/edit"-->
