@@ -103,4 +103,11 @@
         app:layout_constraintTop_toBottomOf="@+id/cost_details"
         android:layout_margin="8dp"
         android:onClick="updateMedicineDetails"/>
+
+    <ExpandableListView
+        android:id="@+id/medicine_details_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/confirm_medicine_changes" />
 </android.support.constraint.ConstraintLayout>

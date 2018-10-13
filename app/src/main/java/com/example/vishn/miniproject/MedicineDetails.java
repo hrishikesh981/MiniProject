@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,12 +25,21 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class MedicineDetails extends AppCompatActivity {
     TextView medicine;
     EditText stock,cost;
     FloatingActionButton add_stock,sub_stock,add_cost,sub_cost;
+    ExpandableListView details;
     FirebaseFirestore db;
     String medicine_pharma_id;
+    private ExpandableListView expandableListView;
+    private ExpandableListAdapter expandableListAdapter;
+    private List<String> expandableListTitle;
+    private HashMap<String, List<String>> expandableListDetail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +51,7 @@ public class MedicineDetails extends AppCompatActivity {
         sub_stock=findViewById(R.id.sub_stock_details);
         add_cost=findViewById(R.id.add_cost_details);
         sub_cost=findViewById(R.id.sub_cost_details);
+        details=findViewById(R.id.medicine_details_list);
         medicine.setText(getIntent().getStringExtra("medicine_name"));
         cost.setText(getIntent().getStringExtra("medicine_cost"));
         stock.setText(getIntent().getStringExtra("medicine_stock"));
@@ -75,7 +87,28 @@ public class MedicineDetails extends AppCompatActivity {
                 cost.setText(""+updatedNum);
             }
         });
-        db=FirebaseFirestore.getInstance();
+        expandableListView=findViewById(R.id.medicine_details_list);
+        expandableListDetail = ExpandableListDataPump.getData(getIntent().getStringExtra("medicine_name"));
+        expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
+        expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail);
+        expandableListView.setAdapter(expandableListAdapter);
+
+
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                Toast.makeText(
+                        getApplicationContext(),
+                        expandableListTitle.get(groupPosition)
+                                + " -> "
+                                + expandableListDetail.get(
+                                expandableListTitle.get(groupPosition)).get(
+                                childPosition), Toast.LENGTH_SHORT
+                ).show();
+                return false;
+            }
+        });
     }
 
     public void updateMedicineDetails(View view) {

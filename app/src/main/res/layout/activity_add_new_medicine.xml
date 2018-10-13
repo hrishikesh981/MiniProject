@@ -146,12 +146,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
+        android:hint="Strength mg/L"
         android:inputType="textPersonName|numberDecimal"
-        app:layout_constraintEnd_toEndOf="parent"
         android:textColor="@color/colorPrimaryDark"
         android:textColorHint="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView10"
-        app:layout_constraintTop_toBottomOf="@+id/add_details_weight"/>
+        app:layout_constraintTop_toBottomOf="@+id/add_details_weight" />
 
     <TextView
         android:id="@+id/textView10"
