@@ -8,6 +8,10 @@
             android:id="@+id/nav_add_medicine"
             android:icon="@drawable/add_box"
             android:title="Add New Medicine" />
+    <item
+        android:id="@+id/nav_fianancing"
+        android:icon="@drawable/financing_icon"
+        android:title="Financing" />
         <!--<item-->
             <!--android:id="@+id/nav_edit_data"-->
             <!--android:icon="@drawable/edit"-->
@@ -16,7 +20,8 @@
     <!--</group>-->
     <item
         android:id="@+id/nav_edit_pharma_details"
-        android:title="Edit Pharmacy Details"/>
+        android:title="Edit Pharmacy Details"
+        android:icon="@drawable/edit_details"/>
 <group android:checkableBehavior="single">
     <item
         android:id="@+id/nav_sign_out"

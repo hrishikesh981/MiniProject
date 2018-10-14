@@ -53,7 +53,7 @@ public class NoteAdapter extends FirestoreRecyclerAdapter<Medicine,NoteAdapter.N
             medicine_name=itemView.findViewById(R.id.medicine_name);
             medicine_cost=itemView.findViewById(R.id.medicine_cost);
             medicine_qty=itemView.findViewById(R.id.medicine_qty);
-            medicine_name.setOnClickListener(new View.OnClickListener() {
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(itemView.getContext(),medicine_name.getText(),Toast.LENGTH_LONG).show();

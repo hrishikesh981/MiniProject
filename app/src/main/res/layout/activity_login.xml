@@ -17,8 +17,8 @@
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        android:textColor="@color/colorTransparentWhite"
-        android:textColorHint="@color/colorPrimary" />
+        android:textColor="@color/colorPrimaryDark"
+        android:textColorHint="@color/colorTransparentWhite" />
 
     <EditText
         android:id="@+id/editTextPassword"
@@ -30,8 +30,8 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        android:textColor="@color/colorTransparentWhite"
-        android:textColorHint="@color/colorPrimary" />
+        android:textColor="@color/colorPrimaryDark"
+        android:textColorHint="@color/colorTransparentWhite" />
 
     <Button
         android:id="@+id/loginactivity_but"
@@ -52,7 +52,7 @@
         android:layout_marginBottom="226dp"
         android:text="Dont have an account?"
         android:textAlignment="center"
-        android:textColor="@color/colorPrimary" />
+        android:textColor="@color/colorPrimaryDark" />
 
     <Button
         android:id="@+id/loginactivity_reg_butt"

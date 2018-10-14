@@ -275,7 +275,11 @@ public class HomePageActivity extends AppCompatActivity
             Intent intent=new Intent(this,AddNewMedicine.class);
             intent.putExtra("mednames",mednames);
             startActivity(intent);
+        }else if (id == R.id.nav_fianancing) {
+            Intent intent=new Intent(this,FinancingList.class);
+            startActivity(intent);
         }
+
         else if (id == R.id.nav_sign_out) {
             FirebaseAuth.getInstance().signOut();
             Intent intent=new Intent(this,LoginActivity.class);

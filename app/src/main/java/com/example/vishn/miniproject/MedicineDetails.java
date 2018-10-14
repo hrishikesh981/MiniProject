@@ -213,7 +213,7 @@ public class MedicineDetails extends AppCompatActivity {
             builder.setTitle("Restock Financing");
             final TextView moneyEarnt=new TextView(this);
             moneyEarnt.setTextColor(Color.BLACK);
-            final double sale=(initialStock-finalStock)*(Double.parseDouble(stock.getText().toString()));
+            final double sale=(initialStock-finalStock)*(Double.parseDouble(cost.getText().toString()));
             moneyEarnt.setText("Sale : "+sale);
             builder.setView(moneyEarnt);
 
