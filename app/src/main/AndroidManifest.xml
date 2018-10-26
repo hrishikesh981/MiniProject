@@ -52,8 +52,9 @@
         <activity android:name=".AddDrugDetails" />
         <activity android:name=".MedicineDetails" />
         <activity android:name=".AddNewMedicine" />
-        <activity android:name=".FinancingList"/>
-        <activity android:name=".UserHomePage"></activity>
+        <activity android:name=".FinancingList" />
+        <activity android:name=".UserHomePage" />
+        <activity android:name=".SearchAll"></activity>
     </application>
 
 </manifest>

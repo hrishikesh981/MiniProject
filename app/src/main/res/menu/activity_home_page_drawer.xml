@@ -19,6 +19,10 @@
 
     <!--</group>-->
     <item
+        android:id="@+id/nav_search_all"
+        android:icon="@drawable/nearby"
+        android:title="Search All Fast" />
+    <item
         android:id="@+id/nav_edit_pharma_details"
         android:title="Edit Pharmacy Details"
         android:icon="@drawable/edit_details"/>
